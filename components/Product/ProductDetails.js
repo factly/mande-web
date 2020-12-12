@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -13,8 +12,7 @@ import Paper from "@material-ui/core/Paper";
 const useStyles = makeStyles((theme) => ({
   root: {
     height: 300,
-    minWidth: 300,
-    maxWidth: 400,
+    minWidth: "80%",
     flex: 1,
     padding: 12,
     paddingTop: 6,
@@ -22,6 +20,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     textAlign: "left",
+    alignSelf: "center",
+    marginBottom: 40,
   },
   header: {
     display: "flex",
@@ -35,8 +35,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "flex-start",
   },
   actions: {
-    display: "flex",
     height: 50,
+    display: "flex",
     justifyContent: "flex-end",
     alignItems: "center",
     alignSelf: "flex-end",
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ProductCard({ id }) {
+export default function ProductDetails({ id }) {
   const classes = useStyles();
 
   const { product } = useSelector(({ products }) => ({
@@ -93,9 +93,6 @@ export default function ProductCard({ id }) {
         ></Typography>
       </CardContent>
       <CardActions className={classes.actions}>
-        <Button size="small" color="primary">
-          <Link href={`/products/${1}`}>Show Datasets</Link>
-        </Button>
         <Button size="small" color="primary">
           Add to Cart
         </Button>
