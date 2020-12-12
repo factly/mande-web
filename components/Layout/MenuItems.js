@@ -14,17 +14,19 @@ const MenuItems = () => {
   return (
     <List>
       {menuItems.map((item, index) => (
-        <>
+        <React.Fragment key={index}>
           <Divider />
-          <ListItem button key={item}>
-            <ListItemIcon>
-              <item.icon />
-            </ListItemIcon>
-            <Link href={item.path}>
-              <ListItemText primary={item.title} />
-            </Link>
-          </ListItem>
-        </>
+          <Link href={item.path}>
+            <ListItem button key={item}>
+              <>
+                <ListItemIcon>
+                  <item.icon />
+                </ListItemIcon>
+                <ListItemText primary={item.title} />
+              </>
+            </ListItem>
+          </Link>
+        </React.Fragment>
       ))}
     </List>
   );
