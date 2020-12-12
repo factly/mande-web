@@ -1,7 +1,11 @@
 import { combineReducers } from "redux";
 
-import datasetsReducer from "./datasets";
+import catalogs from "./catalogs";
+import datasets from "./datasets";
+import products from "./products";
 
 export default combineReducers({
-  datasets: datasetsReducer,
+  catalogs,
+  datasets,
+  products,
 });
