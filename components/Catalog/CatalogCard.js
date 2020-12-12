@@ -62,7 +62,7 @@ export default function CatalogCard({ id }) {
       </CardContent>
       <CardActions className={classes.actions}>
         <Button size="small" color="primary">
-          <Link href={`/${catalog.id}/products`}>Show Products</Link>
+          <Link href={`catalogs/${catalog.id}`}>Show Products</Link>
         </Button>
         <Button size="small" color="primary">
           Add to Cart

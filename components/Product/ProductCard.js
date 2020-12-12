@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardActions from "@material-ui/core/CardActions";
@@ -55,55 +56,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const product = {
-  id: 1,
-  created_at: "2020-12-01T12:05:32.247044Z",
-  updated_at: "2020-12-01T12:29:27.057926Z",
-  deleted_at: null,
-  title: "Checking",
-  slug: "cking",
-  price: 1999,
-  status: "Show",
-  featured_medium_id: null,
-  featured_medium: null,
-  currency_id: 1,
-  currency: {
-    id: 1,
-    created_at: "2020-11-30T17:23:32.631661Z",
-    updated_at: "2020-11-30T17:23:32.631661Z",
-    deleted_at: null,
-    iso_code: "INR",
-    name: "Indian Rupee",
-  },
-  catalogs: null,
-  tags: [
-    {
-      id: 1,
-      created_at: "2020-11-30T17:23:14.387705Z",
-      updated_at: "2020-11-30T17:23:20.400146Z",
-      deleted_at: null,
-      title: "checking",
-      slug: "pc",
-      products: null,
-      datasets: null,
-    },
-    {
-      id: 2,
-      created_at: "2020-11-30T17:23:14.387705Z",
-      updated_at: "2020-11-30T17:23:20.400146Z",
-      deleted_at: null,
-      title: "another",
-      slug: "pc",
-      products: null,
-      datasets: null,
-    },
-  ],
-  datasets: [],
-  orders: null,
-};
-
-export default function ProductCard() {
+export default function ProductCard({ id }) {
   const classes = useStyles();
+
+  const { product } = useSelector(({ products }) => ({
+    product: products.items[id],
+  }));
 
   return (
     <Paper className={classes.root}>
@@ -119,7 +77,12 @@ export default function ProductCard() {
       <CardContent className={classes.content}>
         <div className={classes.tags}>
           {product.tags.map((tag) => (
-            <Chip label={tag.title} variant="outlined" size="small" />
+            <Chip
+              key={tag.id}
+              label={tag.title}
+              variant="outlined"
+              size="small"
+            />
           ))}
         </div>
         <Typography
