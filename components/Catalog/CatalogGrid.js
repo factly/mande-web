@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CatalogGrid({ loading, ids }) {
+export default function CatalogGrid({ loading, ids = [] }) {
   const classes = useStyles();
 
   return (

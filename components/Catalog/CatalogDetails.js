@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     textOverflow: "ellipsis",
   },
   actions: {
-    flexGrow: 1,
+    height: 50,
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center",

@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     textOverflow: "ellipsis",
   },
   actions: {
-    flexGrow: 1,
+    height: 50,
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center",
@@ -62,7 +62,7 @@ export default function CatalogCard({ id }) {
       </CardContent>
       <CardActions className={classes.actions}>
         <Button size="small" color="primary">
-          <Link href={`catalogs/${catalog.id}`}>Show Products</Link>
+          <Link href={`/catalogs/${catalog.id}`}>Show Products</Link>
         </Button>
         <Button size="small" color="primary">
           Add to Cart

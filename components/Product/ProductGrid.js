@@ -5,11 +5,11 @@ import Grid from "@material-ui/core/Grid";
 import ProductCard from "./ProductCard";
 import SkeletonCard from "../Skeleton";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   root: {
     flexGrow: 1,
   },
-}));
+});
 
 export default function ProductGrid({ loading, ids = [] }) {
   const classes = useStyles();
