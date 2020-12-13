@@ -55,54 +55,6 @@ export const loadProducts = (page = 1, limit = 5) => {
   };
 };
 
-export const createProduct = (data) => {
-  return async (dispatch, getState) => {
-    dispatch(setLoading(true));
-
-    await axios({
-      url: PRODUCT_API,
-      method: "post",
-      data: data,
-    });
-
-    dispatch(resetProduct());
-    dispatch(setLoading(false));
-  };
-};
-
-export const updateProduct = (id, data) => {
-  return async (dispatch, getState) => {
-    let url = `${PRODUCT_API}/${id}`;
-
-    dispatch(setLoading(true));
-
-    const response = await axios({
-      url: url,
-      method: "put",
-      data: data,
-    });
-
-    dispatch(addProduct(response.data));
-    dispatch(setLoading(false));
-  };
-};
-
-export const deleteProduct = (id) => {
-  return async (dispatch, getState) => {
-    let url = `${PRODUCT_API}/${id}`;
-
-    dispatch(setLoading(true));
-
-    await axios({
-      url: url,
-      method: "delete",
-    });
-
-    dispatch(resetProduct());
-    dispatch(setLoading(false));
-  };
-};
-
 export const getProduct = (id) => {
   return async (dispatch, getState) => {
     const {

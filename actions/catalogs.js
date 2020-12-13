@@ -53,54 +53,6 @@ export const loadCatalogs = (page = 1, limit = 5) => {
   };
 };
 
-export const createCatalog = (data) => {
-  return async (dispatch, getState) => {
-    dispatch(setLoading(true));
-
-    await axios({
-      url: CATALOG_API,
-      method: "post",
-      data: data,
-    });
-
-    dispatch(resetCatalog());
-    dispatch(setLoading(false));
-  };
-};
-
-export const updateCatalog = (id, data) => {
-  return async (dispatch, getState) => {
-    let url = `${CATALOG_API}/${id}`;
-
-    dispatch(setLoading(true));
-
-    const response = await axios({
-      url: url,
-      method: "put",
-      data: data,
-    });
-
-    dispatch(addCatalog(response.data));
-    dispatch(setLoading(false));
-  };
-};
-
-export const deleteCatalog = (id) => {
-  return async (dispatch, getState) => {
-    let url = `${CATALOG_API}/${id}`;
-
-    dispatch(setLoading(true));
-
-    await axios({
-      url: url,
-      method: "delete",
-    });
-
-    dispatch(resetCatalog());
-    dispatch(setLoading(false));
-  };
-};
-
 export const getCatalog = (id) => {
   return async (dispatch, getState) => {
     const {
