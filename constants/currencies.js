@@ -1,0 +1,2 @@
+export const ADD_CURRENCY = "ADD_CURRENCY";
+export const ADD_CURRENCIES = "ADD_CURRENCIES";

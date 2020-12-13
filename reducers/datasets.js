@@ -13,11 +13,9 @@ import {
 
 const initialState = {
   loading: false,
+  ids: [dataset.id],
   req: [],
-  items: {},
-  favourites: [dataset, dataset, dataset, dataset],
-  recents: [dataset, dataset, dataset],
-  recommendations: [dataset, dataset, dataset],
+  items: { [dataset.id]: dataset },
   total: 0,
 };
 

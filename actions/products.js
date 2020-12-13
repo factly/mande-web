@@ -8,15 +8,15 @@ import {
   RESET_PRODUCT,
   PRODUCT_API,
 } from "../constants/products";
-// import { addCurrencies } from "./currencies";
+import { addCurrencies } from "./currencies";
 // import { addTags } from "./tags";
 // import { addMedium } from "./media";
 // import { addDatasets } from "./datasets";
 import {
   getIds,
   buildObjectOfItems,
-  // getValues,
-  // deleteKeys,
+  getValues,
+  deleteKeys,
 } from "../utils/objects";
 
 export const loadProducts = (page = 1, limit = 5) => {
@@ -85,8 +85,8 @@ export const setLoading = (loading) => {
 };
 
 export const addProduct = (product) => (dispatch) => {
-  // const currencies = getValues([product], "currency");
-  // dispatch(addCurrencies(currencies));
+  const currencies = getValues([product], "currency");
+  dispatch(addCurrencies(currencies));
 
   // const medium = getValues([product], "featured_medium");
   // dispatch(addMedium(medium));
@@ -102,15 +102,14 @@ export const addProduct = (product) => (dispatch) => {
   dispatch({
     type: ADD_PRODUCT,
     payload: {
-      product,
-      // product: deleteKeys([product], ["currency", "featured_medium"])[0],
+      product: deleteKeys([product], ["currency", "featured_medium"])[0],
     },
   });
 };
 
 export const addProducts = (products) => (dispatch) => {
-  // const currencies = getValues(products, "currency");
-  // dispatch(addCurrencies(currencies));
+  const currencies = getValues(products, "currency");
+  dispatch(addCurrencies(currencies));
 
   // const medium = getValues(products, "featured_medium");
   // dispatch(addMedium(medium));
@@ -131,8 +130,7 @@ export const addProducts = (products) => (dispatch) => {
     type: ADD_PRODUCTS,
     payload: {
       products: buildObjectOfItems(
-        products
-        // deleteKeys(products, ["currency", "featured_medium"])
+        deleteKeys(products, ["currency", "featured_medium"])
       ),
     },
   });
