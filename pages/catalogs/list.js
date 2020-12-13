@@ -1,17 +1,18 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch, useSelector } from "react-redux";
 
 import { CatalogGrid } from "../../components/Catalog";
+import { loadCatalogs } from "../../actions/catalogs";
 
 export default function CatalogsList() {
+  const dispatch = useDispatch();
   const { ids, loading } = useSelector(({ catalogs }) => ({
     ids: catalogs.ids,
     loading: catalogs.loading,
   }));
 
   React.useEffect(() => {
-    //get catalogs list
+    dispatch(loadCatalogs());
   }, []);
 
   return (
