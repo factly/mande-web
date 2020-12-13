@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardActions from "@material-ui/core/CardActions";
@@ -9,6 +9,8 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
 import Paper from "@material-ui/core/Paper";
+
+import { createCartItem, deleteCartItem } from "../../actions/cartItems";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,11 +60,29 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProductCard({ id }) {
+  const dispatch = useDispatch();
   const classes = useStyles();
 
-  const { product } = useSelector(({ products }) => ({
-    product: products.items[id],
-  }));
+  const { product, currency, cartId } = useSelector(
+    ({ products, currencies, cartItems }) => {
+      const product = products.items[id];
+      return {
+        product,
+        currency: currencies.items[product.currency_id],
+        cartId: cartItems.productCartMap[id],
+      };
+    }
+  );
+
+  const productInCart = !!cartId;
+
+  const addCartItem = () => {
+    dispatch(createCartItem({ product_id: product.id, status: "cart" }));
+  };
+
+  const removeCartItem = () => {
+    dispatch(deleteCartItem(cartId));
+  };
 
   return !product ? null : (
     <Paper className={classes.root}>
@@ -71,7 +91,7 @@ export default function ProductCard({ id }) {
         title={product.title}
         subheader={
           <Typography variant="button">
-            {product.currency.iso_code} {product.price}
+            {currency.iso_code} {product.price}
           </Typography>
         }
       />
@@ -96,8 +116,12 @@ export default function ProductCard({ id }) {
         <Button size="small" color="primary">
           <Link href={`/products/${1}`}>Show Datasets</Link>
         </Button>
-        <Button size="small" color="primary">
-          Add to Cart
+        <Button
+          size="small"
+          color="primary"
+          onClick={productInCart ? removeCartItem : addCartItem}
+        >
+          {productInCart ? "Remove from Cart" : "Add to Cart"}
         </Button>
       </CardActions>
     </Paper>

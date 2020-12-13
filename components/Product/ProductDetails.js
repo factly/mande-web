@@ -60,9 +60,26 @@ const useStyles = makeStyles((theme) => ({
 export default function ProductDetails({ id }) {
   const classes = useStyles();
 
-  const { product } = useSelector(({ products }) => ({
-    product: products.items[id],
-  }));
+  const { product, currency, cartId } = useSelector(
+    ({ products, currencies, cartItems }) => {
+      const product = products.items[id];
+      return {
+        product,
+        currency: currencies.items[product.currency_id],
+        cartId: cartItems.productCartMap[id],
+      };
+    }
+  );
+
+  const productInCart = !!cartId;
+
+  const addCartItem = () => {
+    dispatch(createCartItem({ product_id: product.id, status: "cart" }));
+  };
+
+  const removeCartItem = () => {
+    dispatch(deleteCartItem(cartId));
+  };
 
   return !product ? null : (
     <Paper className={classes.root}>
@@ -71,7 +88,7 @@ export default function ProductDetails({ id }) {
         title={product.title}
         subheader={
           <Typography variant="button">
-            {product.currency.iso_code} {product.price}
+            {currency.iso_code} {product.price}
           </Typography>
         }
       />
@@ -93,8 +110,12 @@ export default function ProductDetails({ id }) {
         ></Typography>
       </CardContent>
       <CardActions className={classes.actions}>
-        <Button size="small" color="primary">
-          Add to Cart
+        <Button
+          size="small"
+          color="primary"
+          onClick={productInCart ? removeCartItem : addCartItem}
+        >
+          {productInCart ? "Remove from Cart" : "Add to Cart"}
         </Button>
       </CardActions>
     </Paper>
