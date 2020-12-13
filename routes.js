@@ -1,28 +1,24 @@
-import { PieChartOutlined } from "@ant-design/icons";
+import HomeIcon from "@material-ui/icons/Home";
+import FolderIcon from "@material-ui/icons/Folder";
+import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 
 const routes = {
   home: {
     path: "/",
     title: "Home",
-    icon: PieChartOutlined,
+    icon: HomeIcon,
     onNavigation: true,
   },
   favourites: {
-    path: "/favourites",
-    title: "Favourites",
-    icon: PieChartOutlined,
+    path: "/catalogs/list",
+    title: "Catalogs",
+    icon: FolderIcon,
     onNavigation: true,
   },
   recents: {
-    path: "/recents",
-    title: "Recents",
-    icon: PieChartOutlined,
-    onNavigation: true,
-  },
-  recommendations: {
-    path: "/recommendations",
-    title: "Recommendations",
-    icon: PieChartOutlined,
+    path: "/products/list",
+    title: "Products",
+    icon: InsertDriveFileIcon,
     onNavigation: true,
   },
 };
