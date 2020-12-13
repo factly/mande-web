@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -9,6 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 
 import MenuItems from "./MenuItems";
 
@@ -35,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
   },
   menuButton: {
     marginRight: 36,
+  },
+  cartButton: {
+    marginLeft: "auto",
   },
   hide: {
     display: "none",
@@ -76,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MiniDrawer({ children }) {
+export default function Layout({ children }) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -115,6 +120,16 @@ export default function MiniDrawer({ children }) {
               MandE
             </Typography>
           )}
+          <IconButton
+            className={classes.cartButton}
+            color="inherit"
+            aria-label="cart"
+            edge="end"
+          >
+            <Link href={`/cart`}>
+              <ShoppingCartIcon />
+            </Link>
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -138,7 +153,7 @@ export default function MiniDrawer({ children }) {
             <ChevronLeftIcon />
           </IconButton>
         </div>
-        <MenuItems />;
+        <MenuItems />
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
