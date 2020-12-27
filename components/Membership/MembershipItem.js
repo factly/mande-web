@@ -6,8 +6,12 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles({
+  paper: {
+    width: "100%",
+    padding: 10,
+  },
   item: {
-    widht: "80%",
+    width: "80%",
     marginBottom: 10,
   },
 });
@@ -25,13 +29,13 @@ export default function MembershipItem({ id }) {
   });
 
   return (
-    <Paper className={classes.paper} elevation={3}>
-      <ListItem key={membership.id}>
+    <ListItem key={membership.id} className={classes.item}>
+      <Paper className={classes.paper} elevation={3}>
         <ListItemText
           primary={`${plan.name}`}
           secondary={`Razorpay ID: ${membership.razorpay_order_id}`}
         />
-      </ListItem>
-    </Paper>
+      </Paper>
+    </ListItem>
   );
 }

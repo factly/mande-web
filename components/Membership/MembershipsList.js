@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import SkeletonCard from "../Skeleton";
 import MembershipItem from "./MembershipItem";
@@ -34,9 +35,13 @@ export default function MembershipsList() {
     ids: memberships.ids,
   }));
 
-  return (
+  return loading ? (
+    <div style={{ marginLeft: "auto", marginRight: "auto" }}>
+      <CircularProgress />
+    </div>
+  ) : (
     <div className={classes.root}>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12}>
         <Typography variant="h6" className={classes.title}>
           Memberships
         </Typography>
