@@ -4,6 +4,7 @@ import {
   SET_PAYMENT_LOADING,
   SET_PAYMENT_REQUEST,
   SET_PAYMENT_IDS,
+  RESET_PAYMENT,
 } from "../constants/payments";
 
 const initialState = {
@@ -32,6 +33,9 @@ const paymentsReducer = produce((draft, action = {}) => {
       draft.req.push(req);
       draft.total = total;
       return;
+    }
+    case RESET_PAYMENT: {
+      return initialState;
     }
   }
 }, initialState);

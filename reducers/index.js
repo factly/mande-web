@@ -5,6 +5,7 @@ import catalogs from "./catalogs";
 import currencies from "./currencies";
 import datasets from "./datasets";
 import memberships from "./memberships";
+import orders from "./orders";
 import payments from "./payments";
 import plans from "./plans";
 import products from "./products";
@@ -15,6 +16,7 @@ export default combineReducers({
   currencies,
   datasets,
   memberships,
+  orders,
   payments,
   plans,
   products,

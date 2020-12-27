@@ -1,6 +1,71 @@
-import { ADD_PAYMENTS } from "../constants/payments";
+import axios from "../utils/axios";
+import {
+  SET_PAYMENT_LOADING,
+  SET_PAYMENT_REQUEST,
+  SET_PAYMENT_IDS,
+  ADD_PAYMENTS,
+  RESET_PAYMENT,
+  PAYMENT_API,
+} from "../constants/payments";
 import { addCurrencies } from "./currencies";
-import { getValues, deleteKeys, buildObjectOfItems } from "../utils/objects";
+import {
+  getIds,
+  getValues,
+  deleteKeys,
+  buildObjectOfItems,
+} from "../utils/objects";
+
+export const loadPayments = (page = 1, limit = 5) => {
+  return async (dispatch, getState) => {
+    const {
+      payments: { req },
+    } = getState();
+
+    let ids;
+    for (let item of req) {
+      if (item.page === page && item.limit === limit) {
+        ids = [...item.ids];
+      }
+    }
+
+    if (ids) {
+      dispatch(setPaymentIds(ids));
+      return;
+    }
+
+    dispatch(setLoading(true));
+
+    const response = await axios({
+      url: `${PAYMENT_API}?page=${page}&limit=${limit}`,
+      method: "get",
+    });
+
+    const { nodes, total } = response.data;
+    const currentPageIds = getIds(nodes);
+    const currentReq = { page: page, limit: limit, ids: currentPageIds };
+    dispatch(setPaymentRequest(currentReq, total));
+    dispatch(addPayments(nodes));
+    dispatch(setPaymentIds(currentPageIds));
+
+    dispatch(setLoading(false));
+  };
+};
+
+export const createPayment = (data) => {
+  return async (dispatch, getState) => {
+    dispatch(setLoading(true));
+
+    const response = await axios({
+      url: PAYMENT_API,
+      method: "post",
+      data,
+    });
+
+    dispatch(resetPayment());
+    dispatch(loadPayments());
+    dispatch(setLoading(false));
+  };
+};
 
 export const addPayments = (payments) => (dispatch) => {
   const currencies = getValues(payments, "currency");
@@ -12,4 +77,31 @@ export const addPayments = (payments) => (dispatch) => {
       payments: buildObjectOfItems(deleteKeys(payments, ["currency"])),
     },
   });
+};
+
+export const setLoading = (loading) => {
+  return {
+    type: SET_PAYMENT_LOADING,
+    payload: { loading },
+  };
+};
+
+export const setPaymentRequest = (req, total) => {
+  return {
+    type: SET_PAYMENT_REQUEST,
+    payload: { req, total },
+  };
+};
+
+export const setPaymentIds = (ids) => {
+  return {
+    type: SET_PAYMENT_IDS,
+    payload: { ids },
+  };
+};
+
+export const resetPayment = () => {
+  return {
+    type: RESET_PAYMENT,
+  };
 };
