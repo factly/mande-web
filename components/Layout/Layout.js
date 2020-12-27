@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import Link from "next/link";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -8,9 +9,11 @@ import Toolbar from "@material-ui/core/Toolbar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
+import Badge from "@material-ui/core/Badge";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 import MenuItems from "./MenuItems";
 
@@ -40,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
   },
   cartButton: {
     marginLeft: "auto",
+  },
+  profileButton: {
+    marginLefft: 36,
   },
   hide: {
     display: "none",
@@ -85,6 +91,7 @@ export default function Layout({ children }) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const cartItemsCount = useSelector(({ cartItems }) => cartItems.total);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -127,7 +134,19 @@ export default function Layout({ children }) {
             edge="end"
           >
             <Link href={`/cart`}>
-              <ShoppingCartIcon />
+              <Badge badgeContent={cartItemsCount} color="primary">
+                <ShoppingCartIcon />
+              </Badge>
+            </Link>
+          </IconButton>
+          <IconButton
+            className={classes.profileButton}
+            color="inherit"
+            aria-label="profile"
+            edge="end"
+          >
+            <Link href={`/profile`}>
+              <AccountCircleIcon />
             </Link>
           </IconButton>
         </Toolbar>
