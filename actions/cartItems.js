@@ -18,22 +18,6 @@ import {
 
 export const loadCartItems = (page = 1, limit = 5) => {
   return async (dispatch, getState) => {
-    const {
-      cartItems: { req },
-    } = getState();
-
-    let ids;
-    for (let item of req) {
-      if (item.page === page && item.limit === limit) {
-        ids = [...item.ids];
-      }
-    }
-
-    if (ids) {
-      dispatch(setCartItemIds(ids));
-      return;
-    }
-
     dispatch(setLoading(true));
 
     const response = await axios({

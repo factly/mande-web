@@ -11,7 +11,7 @@ import {
 import { addCurrencies } from "./currencies";
 // import { addTags } from "./tags";
 // import { addMedium } from "./media";
-// import { addDatasets } from "./datasets";
+import { addDatasets } from "./datasets";
 import {
   getIds,
   buildObjectOfItems,
@@ -21,22 +21,6 @@ import {
 
 export const loadProducts = (page = 1, limit = 5) => {
   return async (dispatch, getState) => {
-    const {
-      products: { req },
-    } = getState();
-
-    let ids;
-    for (let item of req) {
-      if (item.page === page && item.limit === limit) {
-        ids = [...item.ids];
-      }
-    }
-
-    if (ids) {
-      dispatch(setProductIds(ids));
-      return;
-    }
-
     dispatch(setLoading(true));
 
     const response = await axios({
@@ -91,9 +75,9 @@ export const addProduct = (product) => (dispatch) => {
   // const medium = getValues([product], "featured_medium");
   // dispatch(addMedium(medium));
 
-  // const datasets = getValues([product], "datasets");
-  // dispatch(addDatasets(datasets));
-  // product.datasets = getIds(product.datasets);
+  const datasets = getValues([product], "datasets");
+  dispatch(addDatasets(datasets));
+  product.datasets = getIds(product.datasets);
 
   // const tags = getValues([product], "tags");
   // dispatch(addTags(tags));
@@ -114,11 +98,11 @@ export const addProducts = (products) => (dispatch) => {
   // const medium = getValues(products, "featured_medium");
   // dispatch(addMedium(medium));
 
-  // const datasets = getValues(products, "datasets");
-  // dispatch(addDatasets(datasets));
-  // products.forEach((product) => {
-  //   product.datasets = getIds(product.datasets);
-  // });
+  const datasets = getValues(products, "datasets");
+  dispatch(addDatasets(datasets));
+  products.forEach((product) => {
+    product.datasets = getIds(product.datasets);
+  });
 
   // const tags = getValues(products, "tags");
   // dispatch(addTags(tags));

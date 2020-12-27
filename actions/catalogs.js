@@ -19,22 +19,6 @@ import {
 
 export const loadCatalogs = (page = 1, limit = 5) => {
   return async (dispatch, getState) => {
-    const {
-      catalogs: { req },
-    } = getState();
-
-    let ids;
-    for (let item of req) {
-      if (item.page === page && item.limit === limit) {
-        ids = [...item.ids];
-      }
-    }
-
-    if (ids) {
-      dispatch(setCatalogIds(ids));
-      return;
-    }
-
     dispatch(setLoading(true));
 
     const response = await axios({
