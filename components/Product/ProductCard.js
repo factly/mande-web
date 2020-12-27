@@ -114,7 +114,7 @@ export default function ProductCard({ id }) {
       </CardContent>
       <CardActions className={classes.actions}>
         <Button size="small" color="primary">
-          <Link href={`/products/${1}`}>Show Datasets</Link>
+          <Link href={`/products/${product.id}`}>Show Datasets</Link>
         </Button>
         <Button
           size="small"

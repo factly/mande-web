@@ -61,9 +61,9 @@ export default function CatalogDetails({ id }) {
         </Typography>
       </CardContent>
       <CardActions className={classes.actions}>
-        <Button size="small" color="primary">
+        {/* <Button size="small" color="primary">
           Add to Cart
-        </Button>
+        </Button> */}
       </CardActions>
     </Paper>
   );

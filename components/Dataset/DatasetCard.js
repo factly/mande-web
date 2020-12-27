@@ -44,6 +44,12 @@ const useStyles = makeStyles((theme) => ({
   title: {
     fontSize: 14,
   },
+  ellipsis: {
+    display: "-webkit-box",
+    "-webkit-line-clamp": 6,
+    "-webkit-box-orient": "vertical",
+    overflow: "hidden",
+  },
 }));
 
 export default function DatasetCard({ id }) {
@@ -55,18 +61,23 @@ export default function DatasetCard({ id }) {
     <Paper className={classes.root}>
       <CardHeader className={classes.header} title={dataset.title} />
       <CardContent className={classes.content}>
-        <Typography variant="body2" component="p" color="textSecondary">
+        <Typography
+          variant="body2"
+          component="p"
+          color="textSecondary"
+          className={classes.ellipsis}
+        >
           {dataset.description}
         </Typography>
-        <Typography variant="body2" component="p" color="textSecondary">
+        {/* <Typography variant="body2" component="p" color="textSecondary">
           {dataset.contact_name} {dataset.contact_email}
-        </Typography>
-        <Typography variant="body2" component="p" color="textSecondary">
+        </Typography> */}
+        {/* <Typography variant="body2" component="p" color="textSecondary">
           {dataset.license}
         </Typography>
         <Typography variant="body2" component="p" color="textSecondary">
           {dataset.source}
-        </Typography>
+        </Typography> */}
       </CardContent>
       <CardActions className={classes.actions}>
         <Button size="small" color="primary">

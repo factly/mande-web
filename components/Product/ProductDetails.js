@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardActions from "@material-ui/core/CardActions";
@@ -8,6 +8,8 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
 import Paper from "@material-ui/core/Paper";
+
+import { createCartItem, deleteCartItem } from "../../actions/cartItems";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,15 +60,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProductDetails({ id }) {
+  const dispatch = useDispatch();
   const classes = useStyles();
 
   const { product, currency, cartId } = useSelector(
     ({ products, currencies, cartItems }) => {
       const product = products.items[id];
       return {
+        loading: products.loading,
         product,
-        currency: currencies.items[product.currency_id],
-        cartId: cartItems.productCartMap[id],
+        currency: product && currencies.items[product.currency_id],
+        cartId: product && cartItems.productCartMap[id],
       };
     }
   );

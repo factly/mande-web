@@ -45,6 +45,12 @@ const useStyles = makeStyles((theme) => ({
   title: {
     fontSize: 14,
   },
+  ellipsis: {
+    display: "-webkit-box",
+    "-webkit-line-clamp": 6,
+    "-webkit-box-orient": "vertical",
+    overflow: "hidden",
+  },
 }));
 
 export default function CatalogCard({ id }) {
@@ -56,7 +62,12 @@ export default function CatalogCard({ id }) {
     <Paper className={classes.root}>
       <CardHeader className={classes.header} title={catalog.title} />
       <CardContent className={classes.content}>
-        <Typography variant="body2" component="p" color="textSecondary">
+        <Typography
+          variant="body2"
+          component="p"
+          color="textSecondary"
+          className={classes.ellipsis}
+        >
           {catalog.description}
         </Typography>
       </CardContent>
@@ -64,9 +75,9 @@ export default function CatalogCard({ id }) {
         <Button size="small" color="primary">
           <Link href={`/catalogs/${catalog.id}`}>Show Products</Link>
         </Button>
-        <Button size="small" color="primary">
+        {/* <Button size="small" color="primary">
           Add to Cart
-        </Button>
+        </Button> */}
       </CardActions>
     </Paper>
   );
