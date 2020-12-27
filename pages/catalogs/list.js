@@ -1,5 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Typography from "@material-ui/core/Typography";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { CatalogGrid } from "../../components/Catalog";
 import { loadCatalogs } from "../../actions/catalogs";
@@ -15,7 +17,14 @@ export default function CatalogsList() {
     dispatch(loadCatalogs());
   }, []);
 
-  return (
-    <CatalogGrid loading={loading} ids={loading ? [null, null, null] : ids} />
+  return loading ? (
+    <div style={{ marginLeft: "auto", marginRight: "auto" }}>
+      <CircularProgress />
+    </div>
+  ) : (
+    <>
+      <Typography variant="h6">Catalogs</Typography>
+      <CatalogGrid loading={loading} ids={loading ? [null, null, null] : ids} />
+    </>
   );
 }
