@@ -2,42 +2,55 @@ import HomeIcon from "@material-ui/icons/Home";
 import FolderIcon from "@material-ui/icons/Folder";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 
+import { NAVIGATION, PROFILE } from "./components/Layout/constants";
+
 const routes = {
   home: {
     path: "/",
     title: "Home",
     icon: HomeIcon,
-    onNavigation: true,
   },
   catalogs: {
     path: "/catalogs/list",
     title: "Catalogs",
     icon: FolderIcon,
-    onNavigation: true,
+    position: NAVIGATION,
   },
   products: {
     path: "/products/list",
     title: "Products",
     icon: InsertDriveFileIcon,
-    onNavigation: true,
+    position: NAVIGATION,
   },
   purchasedCatalogs: {
     path: "/catalogs/purchased",
-    title: "Purchased Catalogs",
+    title: "My Catalogs",
     icon: FolderIcon,
-    onNavigation: true,
+    position: PROFILE,
   },
   purchasedProducts: {
     path: "/products/purchased",
-    title: "Purchased Products",
+    title: "My Products",
     icon: InsertDriveFileIcon,
-    onNavigation: true,
+    position: PROFILE,
   },
   plans: {
     path: "/plans",
     title: "Plans",
     icon: InsertDriveFileIcon,
-    onNavigation: true,
+    position: PROFILE,
+  },
+  orders: {
+    path: "/orders",
+    title: "Orders",
+    icon: InsertDriveFileIcon,
+    position: PROFILE,
+  },
+  memberships: {
+    path: "/memberships",
+    title: "Memberships",
+    icon: InsertDriveFileIcon,
+    position: PROFILE,
   },
 };
 
