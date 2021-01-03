@@ -54,6 +54,8 @@ const useStyles = makeStyles((theme) => ({
   },
   tabpanel: {
     width: "80%",
+    height: "100%",
+    overflowX: "auto",
   },
 }));
 
