@@ -4,6 +4,7 @@ import {
   SET_MEMBERSHIP_LOADING,
   SET_MEMBERSHIP_REQUEST,
   SET_MEMBERSHIP_IDS,
+  RESET_MEMBERSHIP,
   MEMBERSHIP_API,
 } from "../constants/memberships";
 import { addPlans } from "./plans";
@@ -15,7 +16,7 @@ import {
   buildObjectOfItems,
 } from "../utils/objects";
 
-export const loadMemberships = (page = 1, limit = 5) => {
+export const loadMemberships = (page = 1, limit = 20) => {
   return async (dispatch, getState) => {
     dispatch(setLoading(true));
 
@@ -32,6 +33,23 @@ export const loadMemberships = (page = 1, limit = 5) => {
     dispatch(setMembershipIds(currentPageIds));
 
     dispatch(setLoading(false));
+  };
+};
+
+export const createMembership = (data) => {
+  return async (dispatch, getState) => {
+    dispatch(setLoading(true));
+
+    const response = await axios({
+      url: MEMBERSHIP_API,
+      method: "post",
+      data,
+    });
+
+    dispatch(resetMembership());
+    dispatch(loadMemberships());
+    dispatch(setLoading(false));
+    return response.data;
   };
 };
 
@@ -70,5 +88,11 @@ export const setMembershipIds = (ids) => {
   return {
     type: SET_MEMBERSHIP_IDS,
     payload: { ids },
+  };
+};
+
+export const resetMembership = () => {
+  return {
+    type: RESET_MEMBERSHIP,
   };
 };
