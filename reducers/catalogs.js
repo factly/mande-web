@@ -5,12 +5,14 @@ import {
   SET_CATALOG_LOADING,
   SET_CATALOG_REQUEST,
   SET_CATALOG_IDS,
+  SET_PURCHASED_CATALOG_IDS,
   RESET_CATALOG,
 } from "../constants/catalogs";
 
 const initialState = {
   loading: true,
   ids: [],
+  purchasedIds: [],
   req: [],
   items: {},
   total: 0,
@@ -33,6 +35,9 @@ const catalogsReducer = produce((draft, action = {}) => {
     }
     case SET_CATALOG_IDS:
       draft.ids = action.payload.ids;
+      return;
+    case SET_PURCHASED_CATALOG_IDS:
+      draft.purchasedIds = action.payload.ids;
       return;
     case SET_CATALOG_REQUEST: {
       const { req, total } = action.payload;

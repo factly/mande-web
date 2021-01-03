@@ -5,12 +5,14 @@ import {
   SET_PRODUCT_LOADING,
   SET_PRODUCT_REQUEST,
   SET_PRODUCT_IDS,
+  SET_PURCHASED_PRODUCT_IDS,
   RESET_PRODUCT,
 } from "../constants/products";
 
 const initialState = {
   loading: true,
   ids: [],
+  purchasedIds: [],
   req: [],
   items: {},
   total: 0,
@@ -33,6 +35,9 @@ const productsReducer = produce((draft, action = {}) => {
     }
     case SET_PRODUCT_IDS:
       draft.ids = action.payload.ids;
+      return;
+    case SET_PURCHASED_PRODUCT_IDS:
+      draft.purchasedIds = action.payload.ids;
       return;
     case SET_PRODUCT_REQUEST: {
       const { req, total } = action.payload;

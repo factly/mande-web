@@ -63,13 +63,14 @@ export default function ProductCard({ id }) {
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  const { product, currency, cartId } = useSelector(
+  const { product, currency, cartId, purchased } = useSelector(
     ({ products, currencies, cartItems }) => {
       const product = products.items[id];
       return {
         product,
         currency: currencies.items[product.currency_id],
         cartId: cartItems.productCartMap[id],
+        purchased: products.purchasedIds.includes(id),
       };
     }
   );
@@ -116,13 +117,15 @@ export default function ProductCard({ id }) {
         <Button size="small" color="primary">
           <Link href={`/products/${product.id}`}>Show Datasets</Link>
         </Button>
-        <Button
-          size="small"
-          color="primary"
-          onClick={productInCart ? removeCartItem : addCartItem}
-        >
-          {productInCart ? "Remove from Cart" : "Add to Cart"}
-        </Button>
+        {!purchased && (
+          <Button
+            size="small"
+            color="primary"
+            onClick={productInCart ? removeCartItem : addCartItem}
+          >
+            {productInCart ? "Remove from Cart" : "Add to Cart"}
+          </Button>
+        )}
       </CardActions>
     </Paper>
   );

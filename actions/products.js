@@ -5,6 +5,7 @@ import {
   SET_PRODUCT_LOADING,
   SET_PRODUCT_REQUEST,
   SET_PRODUCT_IDS,
+  SET_PURCHASED_PRODUCT_IDS,
   RESET_PRODUCT,
   PRODUCT_API,
 } from "../constants/products";
@@ -33,6 +34,26 @@ export const loadProducts = (page = 1, limit = 5) => {
     const currentReq = { page: page, limit: limit, ids: currentPageIds };
     dispatch(addProducts(nodes));
     dispatch(setProductIds(currentPageIds));
+    dispatch(setProductRequest(currentReq, total));
+
+    dispatch(setLoading(false));
+  };
+};
+
+export const loadPurchasedProducts = (page = 1, limit = 5) => {
+  return async (dispatch, getState) => {
+    dispatch(setLoading(true));
+
+    const response = await axios({
+      url: `${PRODUCT_API}/my?page=${page}&limit=${limit}`,
+      method: "get",
+    });
+
+    const { nodes, total } = response.data;
+    const currentPageIds = getIds(nodes);
+    const currentReq = { page: page, limit: limit, ids: currentPageIds };
+    dispatch(addProducts(nodes));
+    dispatch(setPurchasedProductIds(currentPageIds));
     dispatch(setProductRequest(currentReq, total));
 
     dispatch(setLoading(false));
@@ -124,6 +145,13 @@ export const setProductRequest = (req, total) => {
   return {
     type: SET_PRODUCT_REQUEST,
     payload: { req, total },
+  };
+};
+
+export const setPurchasedProductIds = (ids) => {
+  return {
+    type: SET_PURCHASED_PRODUCT_IDS,
+    payload: { ids },
   };
 };
 

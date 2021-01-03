@@ -63,7 +63,7 @@ export default function ProductDetails({ id }) {
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  const { product, currency, cartId } = useSelector(
+  const { product, currency, cartId, purchased } = useSelector(
     ({ products, currencies, cartItems }) => {
       const product = products.items[id];
       return {
@@ -71,6 +71,7 @@ export default function ProductDetails({ id }) {
         product,
         currency: product && currencies.items[product.currency_id],
         cartId: product && cartItems.productCartMap[id],
+        purchased: products.purchasedIds.includes(id),
       };
     }
   );
@@ -114,13 +115,15 @@ export default function ProductDetails({ id }) {
         ></Typography>
       </CardContent>
       <CardActions className={classes.actions}>
-        <Button
-          size="small"
-          color="primary"
-          onClick={productInCart ? removeCartItem : addCartItem}
-        >
-          {productInCart ? "Remove from Cart" : "Add to Cart"}
-        </Button>
+        {!purchased && (
+          <Button
+            size="small"
+            color="primary"
+            onClick={productInCart ? removeCartItem : addCartItem}
+          >
+            {productInCart ? "Remove from Cart" : "Add to Cart"}
+          </Button>
+        )}
       </CardActions>
     </Paper>
   );
