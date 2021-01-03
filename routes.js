@@ -9,15 +9,33 @@ const routes = {
     icon: HomeIcon,
     onNavigation: true,
   },
-  favourites: {
+  catalogs: {
     path: "/catalogs/list",
     title: "Catalogs",
     icon: FolderIcon,
     onNavigation: true,
   },
-  recents: {
+  products: {
     path: "/products/list",
     title: "Products",
+    icon: InsertDriveFileIcon,
+    onNavigation: true,
+  },
+  purchasedCatalogs: {
+    path: "/catalogs/purchased",
+    title: "Purchased Catalogs",
+    icon: FolderIcon,
+    onNavigation: true,
+  },
+  purchasedProducts: {
+    path: "/products/purchased",
+    title: "Purchased Products",
+    icon: InsertDriveFileIcon,
+    onNavigation: true,
+  },
+  plans: {
+    path: "/plans",
+    title: "Plans",
     icon: InsertDriveFileIcon,
     onNavigation: true,
   },
