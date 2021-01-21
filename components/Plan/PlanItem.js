@@ -36,14 +36,17 @@ export default function PlanItem({ id }) {
     planDiv?.current?.appendChild(script);
   }, [planDiv]);
 
-  const { plan, currency } = useSelector(({ plans, currencies }) => {
-    const plan = plans.items[id];
-    const currency = currencies.items[plan.currency_id];
-    return {
-      plan,
-      currency,
-    };
-  });
+  const { plan, currency, user } = useSelector(
+    ({ plans, currencies, user }) => {
+      const plan = plans.items[id];
+      const currency = currencies.items[plan.currency_id];
+      return {
+        plan,
+        currency,
+        user,
+      };
+    }
+  );
 
   const options = {
     key: "rzp_test_sL90Ct6IqbXpSh", // Enter the Key ID generated from the Dashboard
@@ -71,6 +74,10 @@ export default function PlanItem({ id }) {
   };
 
   const onBuy = async () => {
+    if (!user.id) {
+      window.location = `http://127.0.0.1:4455/.factly/kavach/web/auth/login?return_to=${window.location}`;
+      return;
+    }
     if (id) {
       const membership = await dispatch(createMembership({ plan_id: id }));
 
