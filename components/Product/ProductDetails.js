@@ -115,7 +115,7 @@ export default function ProductDetails({ id }) {
         ></Typography>
       </CardContent>
       <CardActions className={classes.actions}>
-        {!purchased && (
+        {/* {!purchased && (
           <Button
             size="small"
             color="primary"
@@ -123,7 +123,7 @@ export default function ProductDetails({ id }) {
           >
             {productInCart ? "Remove from Cart" : "Add to Cart"}
           </Button>
-        )}
+        )} */}
       </CardActions>
     </Paper>
   );

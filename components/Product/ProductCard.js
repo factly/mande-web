@@ -117,7 +117,7 @@ export default function ProductCard({ id }) {
         <Button size="small" color="primary">
           <Link href={`/products/${product.id}`}>Show Datasets</Link>
         </Button>
-        {!purchased && (
+        {/* {!purchased && (
           <Button
             size="small"
             color="primary"
@@ -125,7 +125,7 @@ export default function ProductCard({ id }) {
           >
             {productInCart ? "Remove from Cart" : "Add to Cart"}
           </Button>
-        )}
+        )} */}
       </CardActions>
     </Paper>
   );
