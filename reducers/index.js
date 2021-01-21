@@ -9,6 +9,7 @@ import orders from "./orders";
 import payments from "./payments";
 import plans from "./plans";
 import products from "./products";
+import user from "./user";
 
 export default combineReducers({
   cartItems,
@@ -20,4 +21,5 @@ export default combineReducers({
   payments,
   plans,
   products,
+  user,
 });
