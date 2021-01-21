@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
@@ -14,23 +15,22 @@ import routes from "../../routes";
 import { NAVIGATION, PROFILE } from "./constants";
 
 const useStyles = makeStyles((theme) => ({
-  profileButton: {
-    marginLefft: 36,
-  },
   popover: {
     padding: theme.spacing(2),
   },
 }));
 
 const MenuItems = () => {
+  const user = useSelector(({ user }) => user);
+
   const menuItems = Object.values(routes).filter(
-    (route) => route.position === NAVIGATION
+    (route) => route.position === NAVIGATION && (!route.authorised || user.id)
   );
 
   return (
     <React.Fragment>
       {menuItems.map((item, index) => (
-        <Link href={item.path}>
+        <Link href={item.path} key={index}>
           <Button color="inherit" key={index}>
             {item.title}
           </Button>
@@ -43,18 +43,24 @@ const MenuItems = () => {
 export const Profile = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const user = useSelector(({ user }) => user);
   const openProfilePopover = (event) => setAnchorEl(event.currentTarget);
   const closeProfilePopover = () => setAnchorEl(null);
   const popoverIsOpen = Boolean(anchorEl);
 
   const profileListItem = Object.values(routes).filter(
-    (route) => route.position === PROFILE
+    (route) => route.position === PROFILE && (!route.authorised || user.id)
   );
+
+  const logout = () => {
+    window.location =
+      "http://127.0.0.1:4455/.ory/kratos/public/self-service/browser/flows/logout";
+    return;
+  };
 
   return (
     <div>
       <IconButton
-        className={classes.profileButton}
         color="inherit"
         aria-label="profile"
         edge="end"
@@ -76,8 +82,8 @@ export const Profile = () => {
         }}
       >
         <List component="nav">
-          {profileListItem.map((route) => (
-            <Link href={route.path}>
+          {profileListItem.map((route, index) => (
+            <Link href={route.path} key={index}>
               <ListItem button onClick={closeProfilePopover}>
                 <ListItemIcon>
                   <route.icon />
@@ -86,6 +92,11 @@ export const Profile = () => {
               </ListItem>
             </Link>
           ))}
+          {user.id && (
+            <ListItem button onClick={logout}>
+              <ListItemText primary={"Logout"} />
+            </ListItem>
+          )}
         </List>
       </Popover>
     </div>

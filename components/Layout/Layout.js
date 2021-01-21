@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -14,6 +14,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 
 import MenuItems, { Profile } from "./MenuItems";
+import { getUserDetails } from "../../actions/user";
 
 const drawerWidth = 240;
 
@@ -39,8 +40,9 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: 36,
   },
-  cartButton: {
+  menuAlignRight: {
     marginLeft: "auto",
+    display: "flex",
   },
   profileButton: {
     marginLefft: 36,
@@ -126,8 +128,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Layout({ children }) {
+  const dispatch = useDispatch();
   const classes = useStyles();
-  const cartItemsCount = useSelector(({ cartItems }) => cartItems.total);
+  const { user, cartItemsCount } = useSelector(({ cartItems, user }) => ({
+    user: user,
+    cartItemsCount: cartItems.total,
+  }));
+
+  React.useEffect(() => {
+    dispatch(getUserDetails());
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -153,19 +163,18 @@ export default function Layout({ children }) {
             />
           </div>
           <MenuItems />
-          <IconButton
-            className={classes.cartButton}
-            color="inherit"
-            aria-label="cart"
-            edge="end"
-          >
-            <Link href={`/cart`}>
-              <Badge badgeContent={cartItemsCount} color="primary">
-                <ShoppingCartIcon />
-              </Badge>
-            </Link>
-          </IconButton>
-          <Profile />
+          <div className={classes.menuAlignRight}>
+            {user.id && (
+              <IconButton color="inherit" aria-label="cart" edge="end">
+                <Link href={`/cart`}>
+                  <Badge badgeContent={cartItemsCount} color="primary">
+                    <ShoppingCartIcon />
+                  </Badge>
+                </Link>
+              </IconButton>
+            )}
+            <Profile />
+          </div>
         </Toolbar>
       </AppBar>
       <main className={classes.content}>
