@@ -51,7 +51,7 @@ export default function LoginCard() {
           Sign In for best experience
         </Typography>
         <a
-          href={`http://127.0.0.1:4455/.factly/kavach/web/auth/login`}
+          href={`http://127.0.0.1:4455/.factly/kavach/web/auth/login?return_to=${window.location}`}
           className={classes.login}
         >
           <Button

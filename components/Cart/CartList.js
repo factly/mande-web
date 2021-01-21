@@ -15,9 +15,6 @@ const useStyles = makeStyles((theme) => ({
   demo: {
     backgroundColor: theme.palette.background.paper,
   },
-  title: {
-    margin: theme.spacing(4, 0, 2),
-  },
 }));
 
 export default function CartList({ loading, ids = [] }) {
@@ -30,9 +27,6 @@ export default function CartList({ loading, ids = [] }) {
   ) : (
     <div className={classes.root}>
       <Grid item xs={12} md={6}>
-        <Typography variant="h6" className={classes.title}>
-          Cart
-        </Typography>
         <div className={classes.demo}>
           <List>
             {ids.map((id) =>

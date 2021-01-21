@@ -1,18 +1,31 @@
 import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 
 import CartItemsList from "../components/Cart";
 import { loadCartItems, resetCartItem } from "../actions/cartItems";
 import { createOrder } from "../actions/orders";
 import { createPayment } from "../actions/payments";
+import LoginCard from "../components/Login";
+
+const useStyles = makeStyles((theme) => ({
+  title: {
+    margin: theme.spacing(4, 0, 2),
+  },
+}));
 
 export default function Cart() {
+  const classes = useStyles();
   const cartDiv = React.useRef(null);
+
   const dispatch = useDispatch();
-  const { ids, loading } = useSelector(({ cartItems }) => ({
+
+  const { ids, loading, user } = useSelector(({ cartItems, user }) => ({
     ids: cartItems.ids,
     loading: cartItems.loading,
+    user,
   }));
 
   const options = {
@@ -84,19 +97,28 @@ export default function Cart() {
   };
 
   return (
-    <div ref={cartDiv}>
-      <CartItemsList
-        loading={loading}
-        ids={loading ? [null, null, null] : ids}
-      />
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={onCheckout}
-        disabled={ids?.length === 0}
-      >
-        Checkout
-      </Button>
-    </div>
+    <>
+      <Typography variant="h6" className={classes.title}>
+        Cart
+      </Typography>
+      {!user.id ? (
+        <LoginCard />
+      ) : (
+        <div ref={cartDiv}>
+          <CartItemsList
+            loading={loading}
+            ids={loading ? [null, null, null] : ids}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={onCheckout}
+            disabled={ids?.length === 0}
+          >
+            Checkout
+          </Button>
+        </div>
+      )}
+    </>
   );
 }
