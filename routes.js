@@ -11,6 +11,12 @@ const routes = {
     authorised: false,
     icon: HomeIcon,
   },
+  profiling: {
+    path: "/profiling",
+    title: "Profiling",
+    authorised: false,
+    icon: HomeIcon,
+  },
   catalogs: {
     path: "/catalogs/list",
     title: "Catalogs",
@@ -44,7 +50,7 @@ const routes = {
     title: "Plans",
     icon: InsertDriveFileIcon,
     authorised: false,
-    position: PROFILE,
+    position: NAVIGATION,
   },
   orders: {
     path: "/orders",

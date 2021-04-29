@@ -18,18 +18,19 @@ import {
   // deleteKeys,
 } from "../utils/objects";
 
-export const loadCatalogs = (page = 1, limit = 5) => {
+export const loadCatalogs = (params) => {
   return async (dispatch, getState) => {
     dispatch(setLoading(true));
 
     const response = await axios({
-      url: `${CATALOG_API}?page=${page}&limit=${limit}`,
+      url: `${CATALOG_API}`,
       method: "get",
+      params: params,
     });
 
     const { nodes, total } = response.data;
     const currentPageIds = getIds(nodes);
-    const currentReq = { page: page, limit: limit, ids: currentPageIds };
+    const currentReq = { ...params, ids: currentPageIds };
     dispatch(setCatalogRequest(currentReq, total));
     dispatch(addCatalogs(nodes));
     dispatch(setCatalogIds(currentPageIds));

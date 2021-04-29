@@ -10,6 +10,7 @@ import Chip from "@material-ui/core/Chip";
 import Paper from "@material-ui/core/Paper";
 
 import { createCartItem, deleteCartItem } from "../../actions/cartItems";
+import { getProduct } from "../../actions/products";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -98,6 +99,9 @@ export default function ProductDetails({ id }) {
         }
       />
       <CardContent className={classes.content}>
+        <Typography variant="body2" component="p" color="textSecondary">
+          {product.description}
+        </Typography>
         <div className={classes.tags}>
           {product.tags.map((tag) => (
             <Chip

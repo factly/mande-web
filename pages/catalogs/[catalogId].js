@@ -5,21 +5,26 @@ import Typography from "@material-ui/core/Typography";
 
 import { ProductGrid } from "../../components/Product";
 import { CatalogDetails } from "../../components/Catalog";
+import { getCatalog } from "../../actions/catalogs";
 
 export default function ProductsList() {
   const router = useRouter();
   let { catalogId } = router.query;
-  catalogId = Number(catalogId);
+  if (catalogId) catalogId = parseInt(catalogId, 10);
+  else catalogId = 0;
 
-  const { productIds, loading } = useSelector(({ catalogs }) => {
+  const { productIds, loading, catalog } = useSelector(({ catalogs }) => {
     return {
+      catalog: catalogs.items[catalogId],
       productIds: catalogs.items[catalogId]?.products,
       loading: catalogs.loading,
     };
   });
 
   React.useEffect(() => {
-    //get catalog by id
+    if (!catalog) {
+      dispatch(getCatalog(catalogId));
+    }
   }, []);
 
   return (
