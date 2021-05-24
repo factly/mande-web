@@ -2,18 +2,21 @@ import React from "react";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import CardActions from "@material-ui/core/CardActions";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
+import {
+  CardMedia,
+  CardActions,
+  CardContent,
+  Button,
+  Typography,
+  Paper,
+  Chip,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: 300,
+    height: 350,
     minWidth: 300,
-    maxWidth: 400,
+    maxWidth: 500,
     flex: 1,
     padding: 12,
     paddingTop: 6,
@@ -32,8 +35,6 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     flexDirection: "column",
     alignItems: "flex-start",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
   },
   actions: {
     height: 50,
@@ -51,25 +52,100 @@ const useStyles = makeStyles((theme) => ({
     "-webkit-box-orient": "vertical",
     overflow: "hidden",
   },
+  tags: {
+    display: "flex",
+    width: "100%",
+    justifyContent: "flex-start",
+    "& > *": {
+      margin: theme.spacing(0.5),
+    },
+  },
+  extraTags: {
+    position: "relative",
+  },
+  hiddenTags: {
+    position: "absolute",
+    padding: 5,
+    display: "flex",
+    width: "auto",
+    flexWrap: "wrap",
+    flexDirection: "row",
+    zIndex: 5,
+    "& > *": {
+      margin: theme.spacing(0.5),
+    },
+    right: 0,
+  },
+  media: {
+    height: 200,
+    width: "100%",
+  },
 }));
+
+const MAX_TAGS = 3;
 
 export default function CatalogCard({ id }) {
   const classes = useStyles();
+  const [showExtraTags, setShowExtraTags] = React.useState(false);
 
-  const catalog = useSelector(({ catalogs }) => catalogs.items[id]);
+  const catalog = useSelector(({ catalogs }) => ({
+    ...catalogs.items[id],
+    tags: [
+      { id: 1, title: "Tag 1" },
+      { id: 2, title: "Tag 2" },
+      { id: 3, title: "Tag 3" },
+      { id: 4, title: "Tag 4" },
+      { id: 5, title: "Tag 5" },
+    ],
+  }));
 
   return !catalog ? null : (
     <Paper className={classes.root}>
-      <CardHeader className={classes.header} title={catalog.title} />
+      <CardMedia
+        className={classes.media}
+        image="https://www.mckinsey.com/~/media/McKinsey/Industries/Chemicals/Our%20Insights/Successful%20agricultural%20transformations%20Six%20core%20elements%20of%20planning%20and%20delivery/Successful%20agricultural_1536x1536_400.jpg"
+        title="Paella dish"
+      />
       <CardContent className={classes.content}>
-        <Typography
-          variant="body2"
-          component="p"
-          color="textSecondary"
-          className={classes.ellipsis}
-        >
-          {catalog.description}
+        <Typography variant="h5" component="h2">
+          {catalog.title}
         </Typography>
+        <div className={classes.tags}>
+          {catalog.tags.slice(0, MAX_TAGS).map((tag) => (
+            <Chip
+              key={tag.id}
+              label={tag.title}
+              variant="outlined"
+              size="small"
+            />
+          ))}
+          {catalog.tags.length > MAX_TAGS && (
+            <div className={classes.extraTags}>
+              <div
+                onMouseEnter={() => setShowExtraTags(true)}
+                onMouseLeave={() => setShowExtraTags(false)}
+              >
+                <Chip
+                  label={"+" + catalog.tags.slice(MAX_TAGS).length}
+                  variant="outlined"
+                  size="small"
+                />
+              </div>
+              {showExtraTags && (
+                <Paper className={classes.hiddenTags}>
+                  {catalog.tags.slice(MAX_TAGS).map((tag) => (
+                    <Chip
+                      key={tag.id}
+                      label={tag.title}
+                      variant="outlined"
+                      size="small"
+                    />
+                  ))}
+                </Paper>
+              )}
+            </div>
+          )}
+        </div>
       </CardContent>
       <CardActions className={classes.actions}>
         <Button size="small" color="primary">

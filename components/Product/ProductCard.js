@@ -2,21 +2,23 @@ import React from "react";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import Chip from "@material-ui/core/Chip";
-import Paper from "@material-ui/core/Paper";
+import {
+  CardMedia,
+  CardActions,
+  CardContent,
+  Button,
+  Typography,
+  Paper,
+  Chip,
+} from "@material-ui/core";
 
 import { createCartItem, deleteCartItem } from "../../actions/cartItems";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: 300,
+    height: 350,
     minWidth: 300,
-    maxWidth: 400,
+    maxWidth: 500,
     flex: 1,
     padding: 12,
     paddingTop: 6,
@@ -51,21 +53,45 @@ const useStyles = makeStyles((theme) => ({
   },
   tags: {
     display: "flex",
+    width: "100%",
     justifyContent: "flex-start",
-    flexWrap: "wrap",
     "& > *": {
       margin: theme.spacing(0.5),
     },
   },
+  extraTags: {
+    position: "relative",
+  },
+  hiddenTags: {
+    position: "absolute",
+    padding: 5,
+    display: "flex",
+    width: "auto",
+    flexWrap: "wrap",
+    flexDirection: "row",
+    zIndex: 5,
+    "& > *": {
+      margin: theme.spacing(0.5),
+    },
+    right: 0,
+  },
+  media: {
+    height: 200,
+    width: "200",
+  },
 }));
+
+const MAX_TAGS = 3;
 
 export default function ProductCard({ id }) {
   const dispatch = useDispatch();
   const classes = useStyles();
+  const [showExtraTags, setShowExtraTags] = React.useState(false);
 
   const { product, currency, cartId, purchased } = useSelector(
     ({ products, currencies, cartItems }) => {
       const product = products.items[id];
+      console.log({ satProd: products });
       return {
         product,
         currency: currencies.items[product.currency_id],
@@ -87,18 +113,20 @@ export default function ProductCard({ id }) {
 
   return !product ? null : (
     <Paper className={classes.root}>
-      <CardHeader
-        className={classes.header}
-        title={product.title}
-        subheader={
-          <Typography variant="button">
-            {currency.iso_code} {product.price}
-          </Typography>
-        }
+      <CardMedia
+        className={classes.media}
+        image={product.featured_medium?.url?.proxy}
+        title="Paella dish"
       />
       <CardContent className={classes.content}>
+        <Typography variant="h5" component="h2">
+          {product.title}
+        </Typography>
+        <Typography variant="button">
+          {currency.iso_code} {product.price}
+        </Typography>
         <div className={classes.tags}>
-          {product.tags.map((tag) => (
+          {product.tags.slice(0, MAX_TAGS).map((tag) => (
             <Chip
               key={tag.id}
               label={tag.title}
@@ -106,6 +134,32 @@ export default function ProductCard({ id }) {
               size="small"
             />
           ))}
+          {product.tags.length > MAX_TAGS && (
+            <div className={classes.extraTags}>
+              <div
+                onMouseEnter={() => setShowExtraTags(true)}
+                onMouseLeave={() => setShowExtraTags(false)}
+              >
+                <Chip
+                  label={"+" + product.tags.slice(MAX_TAGS).length}
+                  variant="outlined"
+                  size="small"
+                />
+              </div>
+              {showExtraTags && (
+                <Paper className={classes.hiddenTags}>
+                  {product.tags.slice(MAX_TAGS).map((tag) => (
+                    <Chip
+                      key={tag.id}
+                      label={tag.title}
+                      variant="outlined"
+                      size="small"
+                    />
+                  ))}
+                </Paper>
+              )}
+            </div>
+          )}
         </div>
         <Typography
           variant="body2"
@@ -113,6 +167,7 @@ export default function ProductCard({ id }) {
           color="textSecondary"
         ></Typography>
       </CardContent>
+
       <CardActions className={classes.actions}>
         <Button size="small" color="primary">
           <Link href={`/products/${product.id}`}>Show Datasets</Link>

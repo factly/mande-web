@@ -25,7 +25,7 @@ export default function ProductGrid({ loading, ids = [] }) {
     <div className={classes.root}>
       <Grid container wrap="wrap" alignItems="center" spacing={4}>
         {ids.map((id) => (
-          <Grid key={id} item xs={12} md={6} lg={4}>
+          <Grid key={id} item xs={12} md={6} lg={4} xl={3}>
             {!id ? (
               <LoginCard />
             ) : loading ? (
