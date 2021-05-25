@@ -80,7 +80,6 @@ export default function PlanItem({ id }) {
     }
     if (id) {
       const membership = await dispatch(createMembership({ plan_id: id }));
-
       options.order_id = membership.razorpay_order_id;
       options.handler = ({
         razorpay_payment_id,
@@ -115,8 +114,8 @@ export default function PlanItem({ id }) {
             primary={`${plan.name}`}
             secondary={`${currency.iso_code} ${plan.price}`}
           />
-          <ListItemSecondaryAction className={classes.action} onClick={onBuy}>
-            <Button size="small" color="primary" onClick={onBuy}>
+          <ListItemSecondaryAction className={classes.action}>
+            <Button size="small" color="primary" onClick={() => onBuy()}>
               Buy
             </Button>
           </ListItemSecondaryAction>
