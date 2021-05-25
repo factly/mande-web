@@ -135,9 +135,7 @@ export const addProducts = (products) => (dispatch) => {
   dispatch({
     type: ADD_PRODUCTS,
     payload: {
-      products: buildObjectOfItems(
-        deleteKeys(products, ["currency", "featured_medium"])
-      ),
+      products: buildObjectOfItems(deleteKeys(products, ["currency"])), // delete this key "featured_medium"
     },
   });
 };
