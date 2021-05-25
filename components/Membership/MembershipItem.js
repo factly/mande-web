@@ -2,8 +2,11 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
 import Paper from "@material-ui/core/Paper";
+import Link from "next/link";
+
+import AddIcon from "@material-ui/icons/Add";
+import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles({
   paper: {
@@ -13,6 +16,18 @@ const useStyles = makeStyles({
   item: {
     width: "80%",
     marginBottom: 10,
+  },
+  icon: {
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    cursor: "pointer",
+  },
+  listItem: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    cursor: "pointer",
   },
 });
 
@@ -31,10 +46,15 @@ export default function MembershipItem({ id }) {
   return (
     <ListItem key={membership.id} className={classes.item}>
       <Paper className={classes.paper} elevation={3}>
-        <ListItemText
-          primary={`${plan.name}`}
-          secondary={`Razorpay ID: ${membership.razorpay_order_id}`}
-        />
+        <div className={classes.listItem}>
+          <Typography> {plan.name}</Typography>
+          <Link href={`/memberships/${membership.id}/users`}>
+            <div className={classes.icon}>
+              <AddIcon /> Add users
+            </div>
+          </Link>
+        </div>
+        <p>{plan.description}</p>
       </Paper>
     </ListItem>
   );
