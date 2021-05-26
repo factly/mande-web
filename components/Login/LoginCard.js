@@ -50,19 +50,21 @@ export default function LoginCard() {
         <Typography variant="h6" className={classes.text}>
           Sign In for best experience
         </Typography>
-        <a
-          href={`http://127.0.0.1:4455/.factly/kavach/web/auth/login?return_to=${window.location}`}
-          className={classes.login}
-        >
-          <Button
-            size="medium"
-            variant="contained"
-            color="primary"
-            className={classes.button}
+        {typeof window !== "undefined" ? (
+          <a
+            href={`http://127.0.0.1:4455/.factly/kavach/web/auth/login?return_to=${window.location}`}
+            className={classes.login}
           >
-            Login
-          </Button>
-        </a>
+            <Button
+              size="medium"
+              variant="contained"
+              color="primary"
+              className={classes.button}
+            >
+              Login
+            </Button>
+          </a>
+        ) : null}
       </CardContent>
     </Paper>
   );
