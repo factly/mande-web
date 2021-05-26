@@ -12,6 +12,7 @@ import plans from "./plans";
 import products from "./products";
 import user from "./user";
 import members from "./members";
+import organisations from "./organisations";
 
 export default combineReducers({
   cartItems,
@@ -21,6 +22,7 @@ export default combineReducers({
   members,
   memberships,
   membershipUsers,
+  organisations,
   orders,
   payments,
   plans,
