@@ -1,4 +1,4 @@
-import axios from "../utils/axios";
+import axios from "axios";
 import {
   SET_PAYMENT_LOADING,
   SET_PAYMENT_REQUEST,
