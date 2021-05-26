@@ -15,6 +15,7 @@ import InputBase from "@material-ui/core/InputBase";
 
 import MenuItems, { Profile } from "./MenuItems";
 import { getUserDetails } from "../../actions/user";
+import OrganisationSelector from "../NavBar/OrganisationSelector";
 
 const drawerWidth = 240;
 
@@ -130,10 +131,13 @@ const useStyles = makeStyles((theme) => ({
 export default function Layout({ children }) {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const { user, cartItemsCount } = useSelector(({ cartItems, user }) => ({
-    user: user,
-    cartItemsCount: cartItems.total,
-  }));
+  const { user, cartItemsCount, selected } = useSelector(
+    ({ cartItems, user, organisations }) => ({
+      user: user,
+      cartItemsCount: cartItems.total,
+      selected: organisations.selected,
+    })
+  );
 
   React.useEffect(() => {
     dispatch(getUserDetails());
@@ -164,6 +168,7 @@ export default function Layout({ children }) {
           </div>
           <MenuItems />
           <div className={classes.menuAlignRight}>
+            {user.id && <OrganisationSelector />}
             {user.id && (
               <IconButton color="inherit" aria-label="cart" edge="end">
                 <Link href={`/cart`}>
@@ -177,10 +182,12 @@ export default function Layout({ children }) {
           </div>
         </Toolbar>
       </AppBar>
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        {children}
-      </main>
+      <React.Fragment key={selected.toString()}>
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          {children}
+        </main>
+      </React.Fragment>
     </div>
   );
 }
