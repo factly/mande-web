@@ -9,6 +9,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import SkeletonCard from "../Skeleton";
 import PlanItem from "./PlanItem";
 import { loadPlans } from "../../actions/plans";
+import { loadMemberships } from "../../actions/memberships";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,13 +31,23 @@ export default function PlansList() {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    dispatch(loadPlans());
+    dispatch(loadPlans()).then(() => dispatch(loadMemberships()));
   }, []);
 
-  const { loading, ids = [] } = useSelector(({ plans }) => ({
-    loading: plans.loading,
-    ids: plans.ids,
-  }));
+  const {
+    loading,
+    ids = [],
+    planPurchasedID,
+  } = useSelector(({ plans, memberships }) => {
+    const mIDs = memberships.ids.filter(
+      (each) => memberships.items[each].status === "complete"
+    );
+    return {
+      loading: plans.loading,
+      ids: plans.ids,
+      planPurchasedID: mIDs.length > 0 ? memberships.items[mIDs[0]].plan_id : 0,
+    };
+  });
 
   return loading ? (
     <div style={{ marginLeft: "auto", marginRight: "auto" }}>
@@ -51,7 +62,11 @@ export default function PlansList() {
         <div className={classes.demo}>
           <List>
             {ids.map((id) =>
-              loading ? <SkeletonCard /> : <PlanItem id={id} key={id} />
+              loading ? (
+                <SkeletonCard />
+              ) : (
+                <PlanItem id={id} key={id} pID={planPurchasedID} />
+              )
             )}
           </List>
         </div>

@@ -9,13 +9,17 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 
 import { createMembership } from "../../actions/memberships";
 import { createPayment } from "../../actions/payments";
+import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles({
   paper: {
     width: "100%",
+    height: "70px",
     padding: 10,
     paddingLeft: 20,
     paddingRight: 20,
+    display: "flex",
+    alignItems: "center",
   },
   item: {
     width: "80%",
@@ -24,7 +28,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function PlanItem({ id }) {
+export default function PlanItem({ id, pID }) {
   const planDiv = React.useRef(null);
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -110,15 +114,23 @@ export default function PlanItem({ id }) {
     <div ref={planDiv}>
       <ListItem key={plan.id} className={classes.item} button>
         <Paper className={classes.paper} elevation={3}>
-          <ListItemText
-            primary={`${plan.name}`}
-            secondary={`${currency.iso_code} ${plan.price}`}
-          />
-          <ListItemSecondaryAction className={classes.action}>
-            <Button size="small" color="primary" onClick={() => onBuy()}>
-              Buy
-            </Button>
-          </ListItemSecondaryAction>
+          <div style={{ width: "20%" }}>
+            <Typography>
+              {plan.id === pID ? "CURRENT PLAN : " : null}
+            </Typography>
+            <p>{plan.name}</p>
+          </div>
+          <Typography style={{ width: "60%" }}>{plan.description}</Typography>
+          <Typography
+            style={{ width: "20%" }}
+          >{`${currency.iso_code} ${plan.price}`}</Typography>
+          {pID === 0 ? (
+            <ListItemSecondaryAction className={classes.action}>
+              <Button size="small" color="primary" onClick={() => onBuy()}>
+                Buy
+              </Button>
+            </ListItemSecondaryAction>
+          ) : null}
         </Paper>
       </ListItem>
     </div>
