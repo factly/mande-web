@@ -1,14 +1,16 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Typography from "@material-ui/core/Typography";
 
 import { ProductGrid } from "../../components/Product";
 import { CatalogDetails } from "../../components/Catalog";
 import { getCatalog } from "../../actions/catalogs";
 
-export default function ProductsList() {
+export default function Catalog() {
   const router = useRouter();
+  const dispatch = useDispatch();
+
   let { catalogId } = router.query;
   if (catalogId) catalogId = parseInt(catalogId, 10);
   else catalogId = 0;
