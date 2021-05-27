@@ -12,13 +12,11 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { saveAs } from "file-saver";
 
-import { getDataset, getDatasetFormats } from "../../actions/datasets";
+import { getDatasetFormats } from "../../actions/datasets";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: 300,
-    minWidth: 300,
-    maxWidth: 400,
     flex: 1,
     padding: 12,
     paddingTop: 6,
@@ -43,19 +41,19 @@ const useStyles = makeStyles((theme) => ({
   actions: {
     height: 50,
     display: "flex",
-    justifyContent: "flex-end",
+    justifyContent: "flex-start",
     alignItems: "center",
-    alignSelf: "flex-end",
+    alignSelf: "flex-start",
   },
   title: {
     fontSize: 14,
   },
-  ellipsis: {
-    display: "-webkit-box",
-    "-webkit-line-clamp": 6,
-    "-webkit-box-orient": "vertical",
-    overflow: "hidden",
-  },
+  // ellipsis: {
+  //   display: "-webkit-box",
+  //   "-webkit-line-clamp": 6,
+  //   "-webkit-box-orient": "vertical",
+  //   overflow: "hidden",
+  // },
   select: {
     width: 0,
   },
@@ -81,7 +79,7 @@ export default function DatasetCard({ id }) {
 
   const handleDownload = async () => {
     if (!user.id) {
-      window.location = `http://127.0.0.1:4455/.factly/kavach/web/auth/login?return_to=${window.location}`;
+      window.location = `${process.env.NEXT_PUBLIC_KAVACH_LOGIN_URL}?return_to=${window.location}`;
       return;
     }
     const formats = await dispatch(getDatasetFormats(dataset.id));
@@ -97,30 +95,29 @@ export default function DatasetCard({ id }) {
     saveAs(url, url.split("/").pop());
   };
 
-  console.log(dataset.formats, formats);
-
   return !dataset ? null : (
     <>
       <Paper className={classes.root}>
         <CardHeader className={classes.header} title={dataset.title} />
         <CardContent className={classes.content}>
-          <Typography
-            variant="body2"
-            component="p"
-            color="textSecondary"
-            className={classes.ellipsis}
-          >
-            {dataset.description}
-          </Typography>
+          {/* <Typography variant="body2" component="p" color="textSecondary">
+            <div
+              dangerouslySetInnerHTML={{ __html: dataset.description }}
+              style={{ whiteSpace: "pre-wrap" }}
+            />
+          </Typography> */}
           {/* <Typography variant="body2" component="p" color="textSecondary">
           {dataset.contact_name} {dataset.contact_email}
         </Typography> */}
-          {/* <Typography variant="body2" component="p" color="textSecondary">
-          {dataset.license}
-        </Typography>
-        <Typography variant="body2" component="p" color="textSecondary">
-          {dataset.source}
-        </Typography> */}
+          <Typography variant="body2" component="p" color="textSecondary">
+            Sectors: {dataset.sectors}
+          </Typography>
+          <Typography variant="body2" component="p" color="textSecondary">
+            Organisation: {dataset.organisation}
+          </Typography>
+          <Typography variant="body2" component="p" color="textSecondary">
+            Source: {dataset.source}
+          </Typography>
         </CardContent>
         <CardActions className={classes.actions}>
           {user.id && (
@@ -152,12 +149,12 @@ export default function DatasetCard({ id }) {
           )}
           <Button size="small" color="primary">
             {user.id ? (
-              <Link href={`/datasets/${dataset.id}`}>View Sample</Link>
+              <Link href={`/datasets/${dataset.id}`}>More Info</Link>
             ) : (
               <a
-                href={`http://127.0.0.1:4455/.factly/kavach/web/auth/login?return_to=${window.location}`}
+                href={`${process.env.NEXT_PUBLIC_KAVACH_LOGIN_URL}?return_to=${window.location}`}
               >
-                View Sample
+                More Info
               </a>
             )}
           </Button>

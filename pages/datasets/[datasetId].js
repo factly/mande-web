@@ -1,15 +1,18 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
-import Typography from "@material-ui/core/Typography";
+import { useDispatch, useSelector } from "react-redux";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-import { DatasetSample } from "../../components/Dataset";
+import { DatasetDetails } from "../../components/Dataset";
+import { getDataset } from "../../actions/datasets";
 
 export default function Dataset() {
   const router = useRouter();
+  const dispatch = useDispatch();
   let { datasetId } = router.query;
-  datasetId = Number(datasetId);
+
+  if (datasetId) datasetId = parseInt(datasetId, 10);
+  else datasetId = 0;
 
   const { dataset, loading } = useSelector(({ datasets }) => {
     return {
@@ -17,11 +20,12 @@ export default function Dataset() {
       loading: datasets.loading,
     };
   });
-  console.log({ dataset });
 
   React.useEffect(() => {
-    //get dataset by id
-  }, []);
+    if (!dataset) {
+      dispatch(getDataset(datasetId));
+    }
+  }, [datasetId]);
 
   return loading ? (
     <div style={{ marginLeft: "auto", marginRight: "auto" }}>
@@ -29,8 +33,7 @@ export default function Dataset() {
     </div>
   ) : (
     <>
-      <Typography variant="h6">Dataset: {dataset.title}</Typography>
-      <DatasetSample id={datasetId} />
+      <DatasetDetails id={datasetId} />
     </>
   );
 }
