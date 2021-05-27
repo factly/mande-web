@@ -1,46 +1,52 @@
-import axios from "../utils/axios";
+import axios from "axios";
 import {
   ADD_PRODUCT,
   ADD_PRODUCTS,
   SET_PRODUCT_LOADING,
   SET_PRODUCT_REQUEST,
   SET_PRODUCT_IDS,
+  SET_PURCHASED_PRODUCT_IDS,
   RESET_PRODUCT,
   PRODUCT_API,
 } from "../constants/products";
-// import { addCurrencies } from "./currencies";
+import { addCurrencies } from "./currencies";
 // import { addTags } from "./tags";
 // import { addMedium } from "./media";
-// import { addDatasets } from "./datasets";
+import { addDatasets } from "./datasets";
 import {
   getIds,
   buildObjectOfItems,
-  // getValues,
-  // deleteKeys,
+  getValues,
+  deleteKeys,
 } from "../utils/objects";
 
-export const loadProducts = (page = 1, limit = 5) => {
+export const loadProducts = (params) => {
   return async (dispatch, getState) => {
-    const {
-      products: { req },
-    } = getState();
-
-    let ids;
-    for (let item of req) {
-      if (item.page === page && item.limit === limit) {
-        ids = [...item.ids];
-      }
-    }
-
-    if (ids) {
-      dispatch(setProductIds(ids));
-      return;
-    }
-
     dispatch(setLoading(true));
 
     const response = await axios({
-      url: `${PRODUCT_API}?page=${page}&limit=${limit}`,
+      url: `${PRODUCT_API}`,
+      method: "get",
+      params: params,
+    });
+
+    const { nodes, total } = response.data;
+    const currentPageIds = getIds(nodes);
+    const currentReq = { ...params, ids: currentPageIds };
+    dispatch(addProducts(nodes));
+    dispatch(setProductIds(currentPageIds));
+    dispatch(setProductRequest(currentReq, total));
+
+    dispatch(setLoading(false));
+  };
+};
+
+export const loadPurchasedProducts = (page = 1, limit = 5) => {
+  return async (dispatch, getState) => {
+    dispatch(setLoading(true));
+
+    const response = await axios({
+      url: `${PRODUCT_API}/my?page=${page}&limit=${limit}`,
       method: "get",
     });
 
@@ -48,7 +54,7 @@ export const loadProducts = (page = 1, limit = 5) => {
     const currentPageIds = getIds(nodes);
     const currentReq = { page: page, limit: limit, ids: currentPageIds };
     dispatch(addProducts(nodes));
-    dispatch(setProductIds(currentPageIds));
+    dispatch(setPurchasedProductIds(currentPageIds));
     dispatch(setProductRequest(currentReq, total));
 
     dispatch(setLoading(false));
@@ -85,15 +91,15 @@ export const setLoading = (loading) => {
 };
 
 export const addProduct = (product) => (dispatch) => {
-  // const currencies = getValues([product], "currency");
-  // dispatch(addCurrencies(currencies));
+  const currencies = getValues([product], "currency");
+  dispatch(addCurrencies(currencies));
 
   // const medium = getValues([product], "featured_medium");
   // dispatch(addMedium(medium));
 
-  // const datasets = getValues([product], "datasets");
-  // dispatch(addDatasets(datasets));
-  // product.datasets = getIds(product.datasets);
+  const datasets = getValues([product], "datasets");
+  dispatch(addDatasets(datasets));
+  product.datasets = getIds(product.datasets);
 
   // const tags = getValues([product], "tags");
   // dispatch(addTags(tags));
@@ -102,24 +108,23 @@ export const addProduct = (product) => (dispatch) => {
   dispatch({
     type: ADD_PRODUCT,
     payload: {
-      product,
-      // product: deleteKeys([product], ["currency", "featured_medium"])[0],
+      product: deleteKeys([product], ["currency", "featured_medium"])[0],
     },
   });
 };
 
 export const addProducts = (products) => (dispatch) => {
-  // const currencies = getValues(products, "currency");
-  // dispatch(addCurrencies(currencies));
+  const currencies = getValues(products, "currency");
+  dispatch(addCurrencies(currencies));
 
   // const medium = getValues(products, "featured_medium");
   // dispatch(addMedium(medium));
 
-  // const datasets = getValues(products, "datasets");
-  // dispatch(addDatasets(datasets));
-  // products.forEach((product) => {
-  //   product.datasets = getIds(product.datasets);
-  // });
+  const datasets = getValues(products, "datasets");
+  dispatch(addDatasets(datasets));
+  products.forEach((product) => {
+    product.datasets = getIds(product.datasets);
+  });
 
   // const tags = getValues(products, "tags");
   // dispatch(addTags(tags));
@@ -130,10 +135,7 @@ export const addProducts = (products) => (dispatch) => {
   dispatch({
     type: ADD_PRODUCTS,
     payload: {
-      products: buildObjectOfItems(
-        products
-        // deleteKeys(products, ["currency", "featured_medium"])
-      ),
+      products: buildObjectOfItems(deleteKeys(products, ["currency"])), // delete this key "featured_medium"
     },
   });
 };
@@ -142,6 +144,13 @@ export const setProductRequest = (req, total) => {
   return {
     type: SET_PRODUCT_REQUEST,
     payload: { req, total },
+  };
+};
+
+export const setPurchasedProductIds = (ids) => {
+  return {
+    type: SET_PURCHASED_PRODUCT_IDS,
+    payload: { ids },
   };
 };
 

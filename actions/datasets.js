@@ -1,4 +1,4 @@
-import axios from "../utils/axios";
+import axios from "axios";
 import {
   ADD_DATASET,
   ADD_DATASET_FORMAT,
@@ -14,22 +14,6 @@ import { getIds, buildObjectOfItems } from "../utils/objects";
 
 export const loadDatasets = (page = 1, limit = 5) => {
   return async (dispatch, getState) => {
-    const {
-      datasets: { req },
-    } = getState();
-
-    let ids;
-    for (let item of req) {
-      if (item.page === page && item.limit === limit) {
-        ids = [...item.ids];
-      }
-    }
-
-    if (ids) {
-      dispatch(setDatasetIds(ids));
-      return;
-    }
-
     dispatch(setLoading(true));
 
     const response = await axios({
@@ -50,14 +34,6 @@ export const loadDatasets = (page = 1, limit = 5) => {
 
 export const getDataset = (id) => {
   return async (dispatch, getState) => {
-    const {
-      datasets: { items },
-    } = getState();
-
-    if (items[id]) {
-      return;
-    }
-
     dispatch(setLoading(true));
 
     const response = await axios({
@@ -67,6 +43,20 @@ export const getDataset = (id) => {
     dispatch(addDataset(response.data));
 
     dispatch(setLoading(false));
+  };
+};
+
+export const getDatasetFormats = (id) => {
+  return async (dispatch, getState) => {
+    dispatch(setLoading(true));
+
+    const response = await axios({
+      url: `${DATASET_API}/${id}/format`,
+      method: "get",
+    });
+
+    dispatch(setLoading(false));
+    return response.data.nodes;
   };
 };
 

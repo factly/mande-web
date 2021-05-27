@@ -1,10 +1,17 @@
 import axios from "axios";
 
-export default axios.create({
-  baseURL: window.REACT_APP_API_URL,
-  headers: {
-    common: {
-      "X-User": "1",
-    },
-  },
-});
+function createAxiosAuthMiddleware() {
+  return ({ getState }) =>
+    (next) =>
+    (action) => {
+      axios.defaults.baseURL = process.env.NEXT_PUBLIC_MANDE_PUBLIC_API_URL;
+      axios.defaults.headers.common["X-Organisation"] =
+        getState().organisations.selected;
+      axios.defaults.withCredentials = true;
+      return next(action);
+    };
+}
+
+const axiosAuth = createAxiosAuthMiddleware();
+
+export default axiosAuth;
