@@ -79,7 +79,7 @@ export default function PlanItem({ id, pID }) {
 
   const onBuy = async () => {
     if (!user.id) {
-      window.location = `http://127.0.0.1:4455/.factly/kavach/web/auth/login?return_to=${window.location}`;
+      window.location = `${process.env.NEXT_PUBLIC_KAVACH_LOGIN_URL}?return_to=${window.location}`;
       return;
     }
     if (id) {

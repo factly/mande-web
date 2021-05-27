@@ -4,8 +4,7 @@ function createAxiosAuthMiddleware() {
   return ({ getState }) =>
     (next) =>
     (action) => {
-      axios.defaults.baseURL =
-        "http://127.0.0.1:4455/.factly/mande/server/public";
+      axios.defaults.baseURL = process.env.NEXT_PUBLIC_MANDE_PUBLIC_API_URL;
       axios.defaults.headers.common["X-Organisation"] =
         getState().organisations.selected;
       axios.defaults.withCredentials = true;

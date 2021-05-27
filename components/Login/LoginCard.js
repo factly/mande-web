@@ -52,7 +52,7 @@ export default function LoginCard() {
         </Typography>
         {typeof window !== "undefined" ? (
           <a
-            href={`http://127.0.0.1:4455/.factly/kavach/web/auth/login?return_to=${window.location}`}
+            href={`${process.env.NEXT_PUBLIC_KAVACH_LOGIN_URL}?return_to=${window.location}`}
             className={classes.login}
           >
             <Button
